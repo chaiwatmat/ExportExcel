@@ -34,12 +34,14 @@ namespace ExportExcel.Controllers
         public void Download()
         {
             var data = GetDataFromService();
-            using (var p = new ExcelPackage())
+            string path = HttpContext.Current.Server.MapPath("~/Templates/staff_score.xlsx");
+            var file = new FileInfo(path);
+            using (var p = new ExcelPackage(file))
             {
-                var ws = p.Workbook.Worksheets.Add("Data");
+                var ws = p.Workbook.Worksheets[1];
                 var rowNumber = 2;
 
-                foreach(var d in data)
+                foreach (var d in data)
                 {
                     ws.Cells["A" + rowNumber].Value = d.No;
                     ws.Cells["B" + rowNumber].Value = d.Name;
@@ -48,8 +50,7 @@ namespace ExportExcel.Controllers
                     rowNumber++;
                 }
 
-
-                var fileName = "ExcellData.xlsx";
+                var fileName = "staff_score.xlsx";
                 var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 var headerKey = "content-disposition";
                 var headerValue = string.Format("attachment;  filename={0}", fileName);
