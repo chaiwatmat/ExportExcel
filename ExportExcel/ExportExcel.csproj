@@ -269,10 +269,6 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Domain\Domain.csproj">
-      <Project>{22887ead-f8dc-490f-8753-120f31b89309}</Project>
-      <Name>Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ExportExcelService\ExportExcelService.csproj">
       <Project>{9ac24b9d-e084-4b1d-9649-2b934939c3c0}</Project>
       <Name>ExportExcelService</Name>

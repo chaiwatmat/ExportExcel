@@ -17,7 +17,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-using Domain.Model;
 using ExportExcelService.Services;
 
 namespace ExportExcel.Controllers
@@ -25,13 +24,13 @@ namespace ExportExcel.Controllers
     public class ExportController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         [HttpGet]
-        [Route("api/export/download")]
+        [Route("api/export/{name}")]
         public void Download(string name)
         {
             try
@@ -44,13 +43,13 @@ namespace ExportExcel.Controllers
 
                 Export(fileNameWithExtension, exportExcelPackage);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
 
             }
         }
 
-        public void Export(string fileNameWithExtension, ExcelPackage exportExcelPackage)
+        private void Export(string fileNameWithExtension, ExcelPackage exportExcelPackage)
         {
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             var headerKey = "content-disposition";
