@@ -18,6 +18,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Domain.Model;
+using ExportExcelService.Services;
 
 namespace ExportExcel.Controllers
 {
@@ -33,44 +34,21 @@ namespace ExportExcel.Controllers
         [Route("api/Export/download")]
         public void Download()
         {
-            var data = GetDataFromService();
-            string path = HttpContext.Current.Server.MapPath("~/Templates/staff_score.xlsx");
+            var exportExcelService = new ExportStaffScoreService();
+            var path = HttpContext.Current.Server.MapPath("~/Templates/" + exportExcelService.TemplateName);
             var file = new FileInfo(path);
-            using (var p = new ExcelPackage(file))
-            {
-                var ws = p.Workbook.Worksheets[1];
-                var rowNumber = 2;
 
-                foreach (var d in data)
-                {
-                    ws.Cells["A" + rowNumber].Value = d.No;
-                    ws.Cells["B" + rowNumber].Value = d.Name;
-                    ws.Cells["C" + rowNumber].Value = d.Score;
+            var exportExcelPackage = exportExcelService.GetExcelPackage(file);
 
-                    rowNumber++;
-                }
+            var fileName = "staff_score.xlsx";
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            var headerKey = "content-disposition";
+            var headerValue = string.Format("attachment;  filename={0}", fileName);
 
-                var fileName = "staff_score.xlsx";
-                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                var headerKey = "content-disposition";
-                var headerValue = string.Format("attachment;  filename={0}", fileName);
-
-                HttpContext.Current.Response.ContentType = contentType;
-                HttpContext.Current.Response.AddHeader(headerKey, headerValue);
-                HttpContext.Current.Response.BinaryWrite(p.GetAsByteArray());
-                HttpContext.Current.Response.End();
-            }
-        }
-
-        private IEnumerable<StaffScore> GetDataFromService()
-        {
-            var arrayData = new StaffScore[] {
-                    new StaffScore { No = 1, Name = "Mr.A", Score = 10 },
-                    new StaffScore { No = 2, Name = "Mr.B", Score = 20 },
-                    new StaffScore { No = 3, Name = "Mr.C", Score = 15 }
-            };
-
-            return arrayData;
+            HttpContext.Current.Response.ContentType = contentType;
+            HttpContext.Current.Response.AddHeader(headerKey, headerValue);
+            HttpContext.Current.Response.BinaryWrite(exportExcelPackage.GetAsByteArray());
+            HttpContext.Current.Response.End();
         }
     }
 }
