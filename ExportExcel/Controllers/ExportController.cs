@@ -17,6 +17,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
+using Domain.Model;
+
 namespace ExportExcel.Controllers
 {
     public class ExportController : ApiController
@@ -69,12 +71,5 @@ namespace ExportExcel.Controllers
 
             return arrayData;
         }
-    }
-
-    public class StaffScore
-    {
-        public int No { get; set; }
-        public string Name { get; set; }
-        public int Score { get; set; }
     }
 }
