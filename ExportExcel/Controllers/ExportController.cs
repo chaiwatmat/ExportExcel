@@ -18,6 +18,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using Domain.Model;
+using ExportExcelService.Services;
 
 namespace ExportExcel.Controllers
 {
@@ -30,47 +31,35 @@ namespace ExportExcel.Controllers
         }
 
         [HttpGet]
-        [Route("api/Export/download")]
-        public void Download()
+        [Route("api/export/download")]
+        public void Download(string name)
         {
-            var data = GetDataFromService();
-            string path = HttpContext.Current.Server.MapPath("~/Templates/staff_score.xlsx");
-            var file = new FileInfo(path);
-            using (var p = new ExcelPackage(file))
+            try
             {
-                var ws = p.Workbook.Worksheets[1];
-                var rowNumber = 2;
+                var fileNameWithExtension = name + ".xlsx";
+                var exportExcelManager = new ExportExcelManager();
+                var path = HttpContext.Current.Server.MapPath("~/Templates/" + fileNameWithExtension);
+                var file = new FileInfo(path);
+                var exportExcelPackage = exportExcelManager.GetExcelPackage(fileNameWithExtension, file);
 
-                foreach (var d in data)
-                {
-                    ws.Cells["A" + rowNumber].Value = d.No;
-                    ws.Cells["B" + rowNumber].Value = d.Name;
-                    ws.Cells["C" + rowNumber].Value = d.Score;
+                Export(fileNameWithExtension, exportExcelPackage);
+            }
+            catch(Exception ex)
+            {
 
-                    rowNumber++;
-                }
-
-                var fileName = "staff_score.xlsx";
-                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                var headerKey = "content-disposition";
-                var headerValue = string.Format("attachment;  filename={0}", fileName);
-
-                HttpContext.Current.Response.ContentType = contentType;
-                HttpContext.Current.Response.AddHeader(headerKey, headerValue);
-                HttpContext.Current.Response.BinaryWrite(p.GetAsByteArray());
-                HttpContext.Current.Response.End();
             }
         }
 
-        private IEnumerable<StaffScore> GetDataFromService()
+        public void Export(string fileNameWithExtension, ExcelPackage exportExcelPackage)
         {
-            var arrayData = new StaffScore[] {
-                    new StaffScore { No = 1, Name = "Mr.A", Score = 10 },
-                    new StaffScore { No = 2, Name = "Mr.B", Score = 20 },
-                    new StaffScore { No = 3, Name = "Mr.C", Score = 15 }
-            };
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            var headerKey = "content-disposition";
+            var headerValue = string.Format("attachment;  filename={0}", fileNameWithExtension);
 
-            return arrayData;
+            HttpContext.Current.Response.ContentType = contentType;
+            HttpContext.Current.Response.AddHeader(headerKey, headerValue);
+            HttpContext.Current.Response.BinaryWrite(exportExcelPackage.GetAsByteArray());
+            HttpContext.Current.Response.End();
         }
     }
 }
