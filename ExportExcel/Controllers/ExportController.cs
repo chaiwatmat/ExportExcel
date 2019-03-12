@@ -31,19 +31,19 @@ namespace ExportExcel.Controllers
         }
 
         [HttpGet]
-        [Route("api/Export/download")]
-        public void Download()
+        [Route("api/export/download")]
+        public void Download(string name)
         {
-            var exportExcelService = new ExportStaffScoreService();
-            var path = HttpContext.Current.Server.MapPath("~/Templates/" + exportExcelService.TemplateName);
+            var fileNameWithExtension = name + ".xlsx";
+            var exportExcelManager = new ExportExcelManager();
+            var path = HttpContext.Current.Server.MapPath("~/Templates/" + fileNameWithExtension);
             var file = new FileInfo(path);
 
-            var exportExcelPackage = exportExcelService.GetExcelPackage(file);
+            var exportExcelPackage = exportExcelManager.GetExcelPackage(fileNameWithExtension, file);
 
-            var fileName = "staff_score.xlsx";
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             var headerKey = "content-disposition";
-            var headerValue = string.Format("attachment;  filename={0}", fileName);
+            var headerValue = string.Format("attachment;  filename={0}", fileNameWithExtension);
 
             HttpContext.Current.Response.ContentType = contentType;
             HttpContext.Current.Response.AddHeader(headerKey, headerValue);

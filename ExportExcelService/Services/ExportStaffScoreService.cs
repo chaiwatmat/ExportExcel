@@ -11,10 +11,11 @@ using OfficeOpenXml.Style;
 using System.IO;
 using System.Web;
 using Domain.Model;
+using ExportExcelService.IServices;
 
 namespace ExportExcelService.Services
 {
-    public class ExportStaffScoreService
+    public class ExportStaffScoreService : IExcelExportable
     {
         public string TemplateName => "staff_score.xlsx";
 
@@ -38,12 +39,18 @@ namespace ExportExcelService.Services
             return excelPackage;
         }
 
+        public bool IsMatch(string templateName)
+        {
+            return templateName == TemplateName;
+        }
+
         private IEnumerable<StaffScore> GetDataFromService()
         {
             var arrayData = new StaffScore[] {
                     new StaffScore { No = 1, Name = "Mr.A", Score = 10 },
                     new StaffScore { No = 2, Name = "Mr.B", Score = 20 },
-                    new StaffScore { No = 3, Name = "Mr.C", Score = 15 }
+                    new StaffScore { No = 3, Name = "Mr.C", Score = 15 },
+                    new StaffScore { No = 4, Name = "Mr.D", Score = 30 }
             };
 
             return arrayData;

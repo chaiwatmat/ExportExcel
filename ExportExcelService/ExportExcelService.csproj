@@ -49,8 +49,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IServices\IExcelExportable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ExportExcelManager.cs" />
     <Compile Include="Services\ExportStaffScoreService.cs" />
   </ItemGroup>
   <ItemGroup>
