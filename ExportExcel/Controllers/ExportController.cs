@@ -34,13 +34,24 @@ namespace ExportExcel.Controllers
         [Route("api/export/download")]
         public void Download(string name)
         {
-            var fileNameWithExtension = name + ".xlsx";
-            var exportExcelManager = new ExportExcelManager();
-            var path = HttpContext.Current.Server.MapPath("~/Templates/" + fileNameWithExtension);
-            var file = new FileInfo(path);
+            try
+            {
+                var fileNameWithExtension = name + ".xlsx";
+                var exportExcelManager = new ExportExcelManager();
+                var path = HttpContext.Current.Server.MapPath("~/Templates/" + fileNameWithExtension);
+                var file = new FileInfo(path);
+                var exportExcelPackage = exportExcelManager.GetExcelPackage(fileNameWithExtension, file);
 
-            var exportExcelPackage = exportExcelManager.GetExcelPackage(fileNameWithExtension, file);
+                Export(fileNameWithExtension, exportExcelPackage);
+            }
+            catch(Exception ex)
+            {
 
+            }
+        }
+
+        public void Export(string fileNameWithExtension, ExcelPackage exportExcelPackage)
+        {
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             var headerKey = "content-disposition";
             var headerValue = string.Format("attachment;  filename={0}", fileNameWithExtension);
