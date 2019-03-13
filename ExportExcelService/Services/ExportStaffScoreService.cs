@@ -10,7 +10,7 @@ using System.Drawing;
 using OfficeOpenXml.Style;
 using System.IO;
 using System.Web;
-using Domain.Model;
+using ExportExcelDomain.Model;
 using ExportExcelService.IServices;
 
 namespace ExportExcelService.Services

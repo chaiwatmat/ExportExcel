@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ExportExcelService")]
+[assembly: AssemblyTitle("ExportExcelDomain")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ExportExcelService")]
+[assembly: AssemblyProduct("ExportExcelDomain")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d8b5ada6-9318-4d2a-8186-b3bb8c48decb")]
+[assembly: Guid("712b3567-2b56-4e01-a11f-7e21df0cc0f7")]
 
 // Version information for an assembly consists of the following four values:
 //
