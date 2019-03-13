@@ -9,8 +9,6 @@ using System.Xml;
 using System.Drawing;
 using OfficeOpenXml.Style;
 using System.IO;
-using System.Web;
-using ExportExcelDomain.Model;
 using ExportExcelService.IServices;
 
 namespace ExportExcelService.Services
@@ -22,13 +20,13 @@ namespace ExportExcelService.Services
             new ExportStaffScoreService()
         };
 
-        public ExcelPackage GetExcelPackage(string fileName, FileInfo file)
+        public byte[] GetExcelPackage(string fileName, FileInfo file)
         {
             foreach(var template in templates)
             {
                 if (template.IsMatch(fileName))
                 {
-                    return template.GetExcelPackage(file);
+                    return template.GetExcelPackage(file).GetAsByteArray();
                 }
             }
 
