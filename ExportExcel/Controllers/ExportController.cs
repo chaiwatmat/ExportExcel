@@ -30,6 +30,8 @@ namespace ExportExcel.Controllers
 
         private void Export(string fileNameWithExtension, byte[] bytes)
         {
+            if (bytes == null) { return; }
+
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             var headerKey = "content-disposition";
             var headerValue = string.Format("attachment;  filename={0}", fileNameWithExtension);
